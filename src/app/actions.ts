@@ -77,7 +77,7 @@ export async function getImage(id: string) {
 
 export async function getAllImages(
   searchQuery?: string,
-  sortBy: "newest" | "oldest" = "newest"
+  sortBy: "newest" | "oldest" | "title" = "newest"
 ) {
   try {
     const images = await prisma.image.findMany({
@@ -97,9 +97,7 @@ export async function getAllImages(
             ],
           }
         : undefined,
-      orderBy: {
-        createdAt: sortBy === "newest" ? "desc" : "asc",
-      },
+      orderBy: sortBy === "title" ? { title: "asc" } : { createdAt: sortBy === "newest" ? "desc" : "asc" },
     });
 
     return images;

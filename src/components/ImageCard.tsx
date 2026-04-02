@@ -50,14 +50,27 @@ export default function ImageCard({
     day: "numeric",
   });
 
+  // Function to adjust description text size based on length
+  const getDescriptionFontSize = (desc: string | null | undefined): string => {
+    if (!desc) return "text-sm";
+    
+    const length = desc.length;
+    
+    // Adjust font size based on description length for balanced sizing
+    if (length <= 50) return "text-sm"; // Normal small size for short descriptions
+    if (length <= 100) return "text-sm"; // Keep small for medium descriptions
+    if (length <= 150) return "text-xs"; // Extra small for longer descriptions
+    return "text-xs"; // Extra small for very long descriptions
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       {/* Image Container */}
-      <Link href={`/image/${id}`} className="block relative w-full h-64 overflow-hidden bg-gray-100">
+      <Link href={`/image/${id}`} className="block relative w-full h-64 overflow-hidden bg-gray-900">
         {imageError ? (
-          <div className="w-full h-full flex items-center justify-center bg-gray-200">
+          <div className="w-full h-full flex items-center justify-center bg-gray-800">
             <div className="text-center">
-              <p className="text-gray-500 text-sm">Failed to load image</p>
+              <p className="text-gray-300 text-sm">Failed to load image</p>
               <p className="text-gray-400 text-xs mt-1">{url}</p>
             </div>
           </div>
@@ -81,7 +94,7 @@ export default function ImageCard({
         </Link>
 
         {description && (
-          <p className="text-gray-600 text-sm mt-2 line-clamp-2">{description}</p>
+          <p className={`${getDescriptionFontSize(description)} text-gray-600 mt-2 line-clamp-2`}>{description}</p>
         )}
 
         <p className="text-gray-400 text-xs mt-3">{formattedDate}</p>
